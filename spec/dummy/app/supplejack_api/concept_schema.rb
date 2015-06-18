@@ -35,12 +35,12 @@ class ConceptSchema
 
   group :source_authorities
   
-  model_field :name, field_options: { type: String }, namespace: :foaf
+  model_field :name, field_options: { type: String }, search_as: [:fulltext], search_boost: 6, namespace: :foaf
   model_field :prefLabel, field_options: { type: String }, namespace: :skos
-  model_field :altLabel, field_options: { type: Array }, namespace: :skos
+  model_field :altLabel, field_options: { type: Array }, search_as: [:fulltext], search_boost: 2, namespace: :skos
   model_field :dateOfBirth, field_options: { type: Date }, namespace: :rdaGr2
   model_field :dateOfDeath, field_options: { type: Date }, namespace: :rdaGr2
-  model_field :biographicalInformation, field_options: { type: String }, namespace: :rdaGr2
+  model_field :biographicalInformation, field_options: { type: String }, search_as: [:fulltext], search_boost: 1,  namespace: :rdaGr2
   model_field :sameAs, field_options: { type: Array }, namespace: :owl
   
   model_field :title, store: false, namespace: :dc
