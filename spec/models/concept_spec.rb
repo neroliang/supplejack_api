@@ -10,6 +10,7 @@ require 'spec_helper'
 module SupplejackApi
   describe Concept do
     let(:concept) { create(:concept) }
+    let(:record) { create(:record) }
 
     subject { concept }
 
@@ -19,7 +20,6 @@ module SupplejackApi
     it { should be_timestamped_document.with(:updated) }
 
     it { should have_many(:source_authorities) }
-    it { should have_and_belong_to_many(:records) }
 
     describe 'fields' do
       context '.model fields' do
@@ -80,6 +80,14 @@ module SupplejackApi
                     }
                 }
         expect(Concept.build_context(fields)).to eq context
+      end
+    end
+
+    describe '#records' do
+      it 'returns the records' do
+        agent = create(:agent_concept)
+        record.agents << agent
+        expect(agent.records).to eq [record]
       end
     end
 

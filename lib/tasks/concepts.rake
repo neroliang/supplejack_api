@@ -33,7 +33,7 @@ namespace :concepts do
 
     source_authorities_hash.each do |source_authority|
       # Note: We can use Concept class here instead of Agent class
-    	concept = SupplejackApi::Concept.where(concept_id: source_authority['concept_id']).first
+    	concept = SupplejackApi::ApiConcept::Agent.where(concept_id: source_authority['concept_id']).first
     	concept.source_authorities << SupplejackApi::SourceAuthority.create!(source_authority) if concept
     end
   end
@@ -50,7 +50,7 @@ namespace :concepts do
       concept_ids = item['concept_id']
       concept_ids.each do |concept_id|
         # Note: We can use Concept class here instead of Agent class
-        concept = SupplejackApi::Concept.custom_find(concept_id)
+        concept = SupplejackApi::ApiConcept::Agent.custom_find(concept_id)
         # And we're pushing it to Agents
         record.agents << concept
         record.save

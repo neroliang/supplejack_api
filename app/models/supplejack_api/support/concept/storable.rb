@@ -21,7 +21,6 @@ module SupplejackApi
           attr_accessor :site_id, :context
 
           has_many :source_authorities, class_name: 'SupplejackApi::SourceAuthority'
-          has_and_belongs_to_many :records, class_name: 'SupplejackApi::Record'
 
           # Both of these fields are required in SJ API Core
           # No need to configure in *Schema
@@ -36,6 +35,12 @@ module SupplejackApi
 
             # TODO: Set the Mongo index
             # TODO: Set the validation
+          end
+
+          def records
+            column_id = "#{self.class.name.demodulize.downcase}_ids"
+
+            SupplejackApi::Record.in(column_id => [self.id]).to_a
           end
         end # included
 

@@ -22,7 +22,7 @@ module SupplejackApi
         included do
           include Sunspot::Mongoid
     
-          searchable if: :should_index? do
+          searchable do
             build_sunspot_schema(self)
           end # searchable
         end # included
@@ -31,10 +31,9 @@ module SupplejackApi
           def custom_find(id, scope=nil, options={})
             options ||= {}
             class_scope = self.unscoped
-            column = "#{self.name.demodulize.downcase}_id"
 
             if id.to_s.match(/^\d+$/)
-              data = class_scope.where(column => id).first
+              data = class_scope.where(concept_id: id).first
             elsif id.to_s.match(/^[0-9a-f]{24}$/i)
               data = class_scope.find(id)
             end
@@ -45,7 +44,7 @@ module SupplejackApi
           end
 
           def build_sunspot_schema(builder)
-            ConceptSchema.fields.each do |name,field|
+            ConceptSchema.model_fields.each do |name, field|
               options = {}
               search_as = field.search_as || []
     
