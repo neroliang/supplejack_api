@@ -38,9 +38,7 @@ module SupplejackApi
           end
 
           def records
-            column_id = "#{self.class.name.demodulize.downcase}_ids"
-
-            SupplejackApi::Record.in(column_id => [self.id]).to_a
+            SupplejackApi::Record.in(concept_ids: [self.id]).to_a
           end
         end # included
 

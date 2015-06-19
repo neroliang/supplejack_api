@@ -62,7 +62,7 @@ module SupplejackApi
 
     def include_reverse_fields!(hash)
       hash['@reverse'] = {}
-      key = concept.class.to_s.demodulize.downcase.pluralize
+      key = concept.concept_type
       include!(:records, node: hash['@reverse'], key: key)
 
       # TODO: Limit the number of records by 100 (Temporary) while there's no pagination

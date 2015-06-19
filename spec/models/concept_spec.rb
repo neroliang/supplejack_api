@@ -85,9 +85,15 @@ module SupplejackApi
 
     describe '#records' do
       it 'returns the records' do
-        agent = create(:agent_concept)
-        record.agents << agent
-        expect(agent.records).to eq [record]
+        record.concepts << concept
+        expect(concept.records).to eq [record]
+      end
+    end
+
+    describe '#concept_type' do
+      it 'returns the type of the concept' do
+        allow(concept).to receive(:@type) { 'edm:Agent' }
+        expect(concept.concept_type).to eq 'agents'
       end
     end
 

@@ -11,10 +11,5 @@ module SupplejackApi
       concept_id    1
       name          'Colin McCahon'
     end
-
-    factory :agent_concept, class: SupplejackApi::ApiConcept::Agent do
-      concept_id    2
-      name          'Rita Angus'
-    end
   end
 end

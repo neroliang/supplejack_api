@@ -16,9 +16,8 @@ namespace :concepts do
     concepts_hash = JSON.parse(file)
 
     concepts_hash.each do |concept|
-      # Note that we use Agent class here
-    	existing_concept = SupplejackApi::ApiConcept::Agent.where(concept_id: concept['concept_id']).first
-    	SupplejackApi::ApiConcept::Agent.create(concept) if existing_concept.nil?
+    	existing_concept = SupplejackApi::Concept.where(concept_id: concept['concept_id']).first
+    	SupplejackApi::Concept.create(concept) if existing_concept.nil?
     end
   end
 
@@ -32,8 +31,7 @@ namespace :concepts do
     SupplejackApi::SourceAuthority.delete_all
 
     source_authorities_hash.each do |source_authority|
-      # Note: We can use Concept class here instead of Agent class
-    	concept = SupplejackApi::ApiConcept::Agent.where(concept_id: source_authority['concept_id']).first
+    	concept = SupplejackApi::Concept.where(concept_id: source_authority['concept_id']).first
     	concept.source_authorities << SupplejackApi::SourceAuthority.create!(source_authority) if concept
     end
   end
@@ -49,10 +47,8 @@ namespace :concepts do
       record = SupplejackApi::Record.custom_find(item['record_id'])
       concept_ids = item['concept_id']
       concept_ids.each do |concept_id|
-        # Note: We can use Concept class here instead of Agent class
-        concept = SupplejackApi::ApiConcept::Agent.custom_find(concept_id)
-        # And we're pushing it to Agents
-        record.agents << concept
+        concept = SupplejackApi::Concept.custom_find(concept_id)
+        record.concepts << concept
         record.save
       end
     end

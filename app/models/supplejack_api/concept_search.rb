@@ -24,7 +24,7 @@ module SupplejackApi
     end
 
     def search_builder
-      @search_builder ||= Sunspot.new_search(SupplejackApi::ApiConcept::Agent) do
+      @search_builder ||= Sunspot.new_search(SupplejackApi::Concept) do
         if options[:suggest]
           spellcheck collate: true, only_more_popular: true
         end

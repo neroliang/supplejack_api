@@ -41,5 +41,9 @@ module SupplejackApi
       end
       context
     end
+
+    def concept_type
+      self.send(:@type).gsub(/edm:/, '').downcase.pluralize
+    end
   end
 end
