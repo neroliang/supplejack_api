@@ -22,7 +22,7 @@ module SupplejackApi
       hash = attributes
       # Create empty context block to add to once we know what fields we have.
       hash['@context'] = {}
-      hash['@type'] = object.send(:@type)
+      hash['@type'] = object.concept_type
       hash['@id'] = object.site_id
 
       include_individual_fields!(hash)
@@ -62,7 +62,7 @@ module SupplejackApi
 
     def include_reverse_fields!(hash)
       hash['@reverse'] = {}
-      key = concept.concept_type
+      key = concept.edm_type
       include!(:records, node: hash['@reverse'], key: key)
       hash
     end

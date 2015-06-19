@@ -24,7 +24,7 @@ module SupplejackApi
 
           # Both of these fields are required in SJ API Core
           # No need to configure in *Schema
-          field           :@type,         type: String 
+          field           :concept_type,         type: String 
           auto_increment  :concept_id
           
           index({ concept_id: 1 }, { unique: true })

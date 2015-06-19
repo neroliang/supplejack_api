@@ -23,7 +23,7 @@ module SupplejackApi
 
     describe 'fields' do
       context '.model fields' do
-        %w(@type concept_id).each do |field|
+        %w(concept_type concept_id).each do |field|
           it "responds to #{field} field" do
             expect(concept.respond_to?(field)).to be_truthy
           end
@@ -90,10 +90,9 @@ module SupplejackApi
       end
     end
 
-    describe '#concept_type' do
+    describe '#edm_type' do
       it 'returns the type of the concept' do
-        allow(concept).to receive(:@type) { 'edm:Agent' }
-        expect(concept.concept_type).to eq 'agents'
+        expect(concept.edm_type).to eq 'agents'
       end
     end
 

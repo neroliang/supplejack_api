@@ -8,6 +8,8 @@
 require 'json'
 
 namespace :concepts do
+  task :all => ['import_concepts', 'import_source_authorities', 'bind_records', 'index']
+
 	desc 'Import concepts'
   task import_concepts: :environment do
     puts 'Importing concepts'
@@ -41,7 +43,6 @@ namespace :concepts do
     puts 'Binding records with concepts'
     file = File.read("#{Rails.root}/db/binding_records.json")
     records_hash = JSON.parse(file)
-    # puts recordss_hash
 
     records_hash.each do |item|
       record = SupplejackApi::Record.custom_find(item['record_id'])
@@ -53,4 +54,21 @@ namespace :concepts do
       end
     end
   end
+
+  desc 'Index Concepts and Records'
+  task index: :environment do
+    Sunspot.session = Sunspot::Rails.build_session
+    SupplejackApi::Concept.all.map(&:index!)
+    ::Record.all.map(&:index!)
+  end
+
+  desc 'Clear all concepts, source authorities'
+  task reset: :environment do
+    Sunspot.session = Sunspot::Rails.build_session
+    Sunspot.remove_all
+    SupplejackApi::Concept.delete_all
+    SupplejackApi::SourceAuthority.delete_all
+    ::Record.delete_all
+  end
+
 end

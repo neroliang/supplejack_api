@@ -1,6 +1,6 @@
 [
     {  
-        "@type":"edm:Agent",
+        "concept_type":"edm:Agent",
         "concept_id":1,
         "name":"Colin McCahon",
         "prefLabel":"Colin McCahon",
@@ -15,7 +15,7 @@
         "source_authorities":[]
     },
     {  
-        "@type":"edm:Agent",
+        "concept_type":"edm:Agent",
         "concept_id":2,
         "name":"Rita Angus",
         "prefLabel":"Rita Angus",

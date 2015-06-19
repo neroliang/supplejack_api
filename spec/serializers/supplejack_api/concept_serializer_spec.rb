@@ -37,27 +37,26 @@ module SupplejackApi
               :edm => 'http://www.europeana.eu/schemas/edm/',
               :dcterms => 'http://purl.org/dc/terms/',
               :concept_id => {
-                  '@id' => 'dcterms:identifier'
+                '@id' => 'dcterms:identifier'
               },
               :name => {
-                  '@id' => 'foaf:name'
+                '@id' => 'foaf:name'
               },
               :title => {
-                  '@id' => 'dc:title'
+                '@id' => 'dc:title'
               },
               :date => {
-                  '@id' => 'dc:date'
+                '@id' => 'dc:date'
               },
               :description => {
-                  '@id' => 'dc:description'
+                '@id' => 'dc:description'
               },
               :agents => {
-                  '@id'=>'edm:agents'
+                '@id'=>'edm:agents'
               }
           },
           :name => 'McCahon'
         }
-        # concept = { :'@context' => { foaf: 'http://xmlns.com/foaf/0.1/', dc: 'http://purl.org/dc/elements/1.1/', edm: 'http://www.europeana.eu/schemas/edm/', dcterms: 'http://purl.org/dc/terms/', concept_id: { : :'@id' =>=> 'dcterms:identifier'}, name: { :'@id' => 'foaf:name'}, title: {  :'@id' => 'dc:title'}, date: { :'@id' => 'dc:date'}, description: { :'@id' => 'dc:description'}, agents: { :'@id' => 'edm:agents'}}, name: 'McCahon'}
         expect(@hash).to eq concept
       end
 
@@ -83,8 +82,8 @@ module SupplejackApi
         hash = {}
         s = serializer({ fields: [:name] }, { name: 'McCahon' })
         s.include_reverse_fields!(hash)
-        expect(hash['@reverse']).to include 'concepts'
-        expect(hash['@reverse']['concepts']).to eq []
+        expect(hash['@reverse']).to include 'agents'
+        expect(hash['@reverse']['agents']).to eq []
       end
     end
   end
