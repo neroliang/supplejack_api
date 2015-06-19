@@ -46,4 +46,5 @@ class ConceptSchema
   model_field :title, store: false, namespace: :dc
   model_field :date, store: false, namespace: :dc
   model_field :description, store: false, namespace: :dc
+  model_field :agents, store: false, namespace: :edm
 end

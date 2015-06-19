@@ -64,9 +64,6 @@ module SupplejackApi
       hash['@reverse'] = {}
       key = concept.concept_type
       include!(:records, node: hash['@reverse'], key: key)
-
-      # TODO: Limit the number of records by 100 (Temporary) while there's no pagination
-      hash['@reverse'][key] = hash['@reverse'][key].take(100)
       hash
     end
   end
