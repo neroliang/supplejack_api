@@ -55,6 +55,14 @@ namespace :concepts do
     end
   end
 
+  desc 'Unbind records to concepts'
+  task unbind_records: :environment do
+    puts 'Unbinding records with concepts'
+    Record.where(:concept_ids.ne => nil).each do |record|
+      record.unset(:concept_ids)
+    end
+  end
+
   desc 'Index Concepts and Records'
   task index: :environment do
     Sunspot.session = Sunspot::Rails.build_session
