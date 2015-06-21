@@ -33,7 +33,7 @@ module SupplejackApi
 
     def show
       begin
-        @concept = Concept.custom_find(params[:id], current_user, params[:search])
+        @concept = SupplejackApi::Concept.custom_find(params[:id], current_user, params[:search])
         @concept.site_id = "http://#{ENV['WWW_DOMAIN']}/concepts/#{@concept.concept_id}"
         @concept.context = schema_url
         respond_with @concept, root: false, serializer: ConceptSerializer
