@@ -28,7 +28,7 @@ module SupplejackApi
       include_individual_fields!(hash)
       include_context_fields!(hash)
       include!(:source_authorities, node: hash) if source_authorities?
-      # include_reverse_fields!(hash)
+      include_reverse_fields!(hash)
       hash
     end
 

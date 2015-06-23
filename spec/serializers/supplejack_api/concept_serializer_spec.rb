@@ -17,7 +17,6 @@ module SupplejackApi
       attributes.delete_if {|k, v| concept_fields.include?(k.to_s) }
 
       @concept = FactoryGirl.build(:concept, concept_attributes)
-      @concept.context = "http://localhost/schema"
       @concept.id = "http://localhost/concepts/#{@concept.concept_id}" 
       @serializer = ConceptSerializer.new(@concept, options)
     end
@@ -63,7 +62,7 @@ module SupplejackApi
       it 'show context document url' do
         s = serializer()
         s.include_context_fields!(@hash)
-        expect(@hash['@context']).to eq 'http://localhost/schema'
+        expect(@hash['@context']).to eq "#{ENV['HTTP_HOST']}/schema"
         expect(@hash[:name]).to eq 'McCahon'
       end
     end

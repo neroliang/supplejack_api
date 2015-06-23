@@ -7,6 +7,5 @@
 
 module SupplejackApi
   class ConceptSearchSerializer < SearchSerializer
-  	
   end
 end
