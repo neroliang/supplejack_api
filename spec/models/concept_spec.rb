@@ -96,6 +96,18 @@ module SupplejackApi
       end
     end
 
+    describe '#site_id' do
+      it 'returns the site_id of the concept' do
+        expect(concept.site_id).to eq "#{ENV['HTTP_HOST']}/concepts/1"
+      end
+    end
+
+    describe '#context' do
+      it 'returns the context of the concept' do
+        expect(concept.context).to eq "#{ENV['HTTP_HOST']}/schema"
+      end
+    end
+
     #   it "shouldn't call find when the mongo id is invalid" do
     #     expect(Concept).to_not receive(:find)
     #     expect { Concept.custom_find('1234567abc') }.to raise_error(Mongoid::Errors::DocumentNotFound)

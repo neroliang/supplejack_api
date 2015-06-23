@@ -18,8 +18,6 @@ module SupplejackApi
 
           store_in collection: 'concepts'
 
-          attr_accessor :site_id, :context
-
           has_many :source_authorities, class_name: 'SupplejackApi::SourceAuthority'
 
           # Both of these fields are required in SJ API Core
@@ -42,6 +40,18 @@ module SupplejackApi
             SupplejackApi::Record.where(concept_ids: self.id).limit(50).to_a
           end
         end # included
+
+        def edm_type
+          concept_type.gsub(/edm:/, '').downcase.pluralize
+        end
+
+        def site_id
+          [ENV['HTTP_HOST'], 'concepts', self.concept_id].join('/')
+        end
+
+        def context
+          [ENV['HTTP_HOST'], 'schema'].join('/')
+        end
 
       end # module
     end

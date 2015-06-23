@@ -41,9 +41,5 @@ module SupplejackApi
       end
       context
     end
-
-    def edm_type
-      concept_type.gsub(/edm:/, '').downcase.pluralize
-    end
   end
 end
