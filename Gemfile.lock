@@ -97,9 +97,6 @@ GEM
     addressable (2.3.8)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.10)
-    better_errors (0.8.0)
-      coderay (>= 1.0.0)
-      erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bson (2.3.0)
@@ -388,7 +385,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers!
-  better_errors (~> 0.8.0)
   binding_of_caller (~> 0.7.1)
   capybara (~> 2.2.0)
   cucumber-rails
@@ -413,3 +409,6 @@ DEPENDENCIES
   supplejack_api!
   timecop (~> 0.4.6)
   xml_spec!
+
+BUNDLED WITH
+   1.10.3

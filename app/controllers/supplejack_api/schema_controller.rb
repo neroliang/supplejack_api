@@ -6,7 +6,13 @@
 # the Department of Internal Affairs. http://digitalnz.org/supplejack
 
 module SupplejackApi
-  class ConceptSearchSerializer < SearchSerializer
-  	
+  class SchemaController < ApplicationController
+    skip_before_filter :authenticate_user!
+    respond_to :json, :xml
+
+    def show
+      @schema_fields = Concept.build_context(ConceptSchema.model_fields.keys)
+      respond_with @schema_fields
+    end
   end
 end

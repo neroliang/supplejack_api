@@ -7,46 +7,43 @@
 
 module SupplejackApi
   class Concept
-    include Support::Storable
-    include Support::Searchable
-    include Support::Harvestable
-    include Support::FragmentHelpers
+    include Support::Concept::Storable
+    include Support::Concept::Searchable
     include ActiveModel::SerializerSupport
 
-    attr_accessor :should_index_flag
-    
-    # Associations
-    embeds_many :fragments, cascade_callbacks: true, class_name: 'SupplejackApi::ApiConcept::ConceptFragment'
-    embeds_one :merged_fragment, class_name: 'SupplejackApi::ApiConcept::ConceptFragment'
+    has_many :source_authorities, class_name: 'SupplejackApi::SourceAuthority'
 
-    # From storable
-    store_in collection: 'concepts'
-    index({ concept_id: 1 }, { unique: true })
-    auto_increment :concept_id, session: 'strong'
+    def self.build_context(fields)
+      context = {}
+      namespaces = []
 
-    build_model_fields
+      fields.each do |field|
+        namespaces << ConceptSchema.model_fields[field].try(:namespace)
+      end
 
-    # Callbacks
-    before_save :merge_fragments
+      namespaces.compact.uniq.each do | namespace |
+        context[namespace] = ConceptSchema.namespaces[namespace].url
+        namespaced_fields = ConceptSchema.fields.select { |key, field| field.namespace == namespace }
+        namespaced_fields.each do |name, field|
+          context[name] = "#{field.namespace}:#{field.namespace_field}" if fields.include?(name) && name != field.namespace
+        end
+      end
 
-    # Scopes
-    scope :active, -> { where(status: 'active') }
-    scope :deleted, -> { where(status: 'deleted') }
-    scope :suppressed, -> { where(status: 'suppressed') }
-    scope :solr_rejected, -> { where(status: 'solr_rejected') }
+      # Manually build context for concept_id
+      context[:dcterms] = ConceptSchema.namespaces[:dcterms].url
+      context[:concept_id] = {}
+      context[:concept_id]["@id"] = "dcterms:identifier"
 
-    def active?
-      self.status == 'active'
-    end
-  
-    def should_index?
-      return should_index_flag if !should_index_flag.nil?
-      active?
-    end
-
-    def fragment_class
-      SupplejackApi::ApiConcept::ConceptFragment
+      fields.each do |field|        
+        context[field] = {}
+        namespace = ConceptSchema.model_fields[field].try(:namespace)
+        context[field]['@id'] = "#{namespace}:#{field.to_s}"
+      end
+      context
     end
 
+    def edm_type
+      concept_type.gsub(/edm:/, '').downcase.pluralize
+    end
   end
 end

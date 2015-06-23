@@ -8,81 +8,63 @@
 module SupplejackApi
   class ConceptSerializer < ActiveModel::Serializer
 
-     def serializable_hash
-      hash = attributes
+    has_many :source_authorities
+    has_many :records, serializer: SupplejackApi::ConceptRecordSerializer
 
+    ConceptSchema.groups.keys.each do |group|
+      define_method("#{group}?") do
+        return false unless options[:groups].try(:any?)
+        self.options[:groups].include?(group)
+      end
+    end
+
+    def serializable_hash
+      hash = attributes
       # Create empty context block to add to once we know what fields we have.
       hash['@context'] = {}
-
-      groups = (options[:groups] & ConceptSchema.groups.keys) || []
-
-      fields = Set.new
-      groups.each do |group|
-        fields.merge(ConceptSchema.groups[group].try(:fields))
-      end
-
-      fields.each do |field|
-        hash[field] = field_value(field, options)
-      end
+      hash['@type'] = object.concept_type
+      hash['@id'] = object.site_id
 
       include_individual_fields!(hash)
       include_context_fields!(hash)
+      include!(:source_authorities, node: hash) if source_authorities?
+      # include_reverse_fields!(hash)
       hash
     end
 
     def include_context_fields!(hash)
       fields = hash.dup
-      fields.shift
+      fields.keep_if { |field| ConceptSchema.model_fields.include?(field) }
+      field_keys = fields.keys
 
-      context = build_context(fields.keys)
-      hash['@context'] = context
+      # Include unstored fields from the Schema
+      record_fields = ConceptSchema.model_fields.select { |key, value| value.try(:store) == false }
+      field_keys += record_fields.keys
+
+      if self.options[:inline_context]
+        hash['@context'] = Concept.build_context(field_keys)
+      else
+        hash['@context'] = object.context
+      end
       hash
     end
 
     def include_individual_fields!(hash)
       if self.options[:fields].present?
+        self.options[:fields].push(:concept_id)
+        self.options[:fields].sort!
         self.options[:fields].each do |field|
-          hash[field] = concept.send(field)
+          hash[field] = object.send(field)
         end
       end
       hash
     end
 
-    def field_value(field, options={})
-      value = nil
-
-      if ConceptSchema.fields[field].try(:search_value) && ConceptSchema.fields[field].try(:store) == false
-        value = ConceptSchema.fields[field].search_value.call(object)
-      else
-        value = object.public_send(field)
-      end
-
-      value
+    def include_reverse_fields!(hash)
+      hash['@reverse'] = {}
+      key = concept.edm_type
+      include!(:records, node: hash['@reverse'], key: key)
+      hash
     end
-
-    def build_context(fields)
-      context = {}
-
-      namespaces = []
-
-      fields.each do |field|
-        namespaces << ConceptSchema.fields[field].try(:namespace)
-      end
-
-      namespaces.compact.uniq.each do | namespace |
-        context[namespace] = ConceptSchema.namespaces[namespace].url
-        namespaced_fields(namespace).each do |name, field|
-          context[name] = "#{field.namespace}:#{field.namespace_field}" if fields.include?(name) && name != field.namespace
-        end
-      end
-
-      context
-    end
-
-    def namespaced_fields(namespace)
-      ConceptSchema.fields.select { |key, field| field.namespace == namespace }
-    end
-
   end
-
 end
