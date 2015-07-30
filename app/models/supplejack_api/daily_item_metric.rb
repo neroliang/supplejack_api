@@ -15,7 +15,8 @@ module SupplejackApi
     embeds_many :primary_collection_metrics, class_name: 'SupplejackApi::PrimaryCollectionMetric'
     accepts_nested_attributes_for :primary_collection_metrics
   
-    field :total_active_records,       type: Integer
+    field :total_active_records,  type: Integer
+    field :day,                   type: Date
   
     index created_at: 1
   end
