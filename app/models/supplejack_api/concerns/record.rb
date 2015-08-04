@@ -20,10 +20,11 @@ module SupplejackApi::Concerns::Record
     before_save :merge_fragments
 
     # Scopes
-    scope :active, -> { where(status: 'active') }
-    scope :deleted, -> { where(status: 'deleted') }
-    scope :suppressed, -> { where(status: 'suppressed') }
-    scope :solr_rejected, -> { where(status: 'solr_rejected') }
+    scope :active,          -> { where(status: 'active') }
+    scope :deleted,         -> { where(status: 'deleted') }
+    scope :suppressed,      -> { where(status: 'suppressed') }
+    scope :solr_rejected,   -> { where(status: 'solr_rejected') }
+    scope :created_on_day,  ->(day) { where(:created_at.gt => day, :created_at.lt => day + 1.day)}
 
     build_model_fields
 
