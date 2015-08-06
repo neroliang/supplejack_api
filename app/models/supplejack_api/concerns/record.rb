@@ -25,6 +25,7 @@ module SupplejackApi::Concerns::Record
     scope :suppressed,      -> { where(status: 'suppressed') }
     scope :solr_rejected,   -> { where(status: 'solr_rejected') }
     scope :created_on_day,  ->(day) { where(:created_at.gte => day, :created_at.lte => day + 1.day)}
+    scope :created_before,  ->(day) { where(:created_at.lte => day) }
 
     build_model_fields
 
