@@ -11,6 +11,7 @@ module SupplejackApi
 
     respond_to :json
 
+    skip_before_filter :authenticate_user!, only: [:admin_index, :public_index, :update, :destroy]
     prepend_before_filter :find_user_set, only: [:update, :destroy]
     before_filter :authenticate_admin!, only: [:admin_index, :public_index]
 

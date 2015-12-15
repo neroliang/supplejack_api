@@ -9,6 +9,7 @@ module SupplejackApi
   class UsersController < ApplicationController
     
     respond_to  :xml, :json
+    skip_before_filter :authenticate_user!
     before_filter :authenticate_admin!, except: :show
     
     def show
