@@ -44,6 +44,8 @@ module SupplejackApi
       end
 
       def merge_fragments
+        Rails.logger.debug("SupplejackApi::Support::FragmentHelpers.merge_fragments()")
+        Rails.logger.debug("SupplejackApi::Support::FragmentHelpers.merge_fragments: #{fragment_class.mutable_fields.inspect}")
         self.merged_fragment = nil
 
         if self.fragments.size > 1

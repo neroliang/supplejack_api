@@ -11,7 +11,9 @@ module SupplejackApi
       extend ActiveSupport::Concern
       
       def create_or_update_fragment(attributes)
+        Rails.logger.debug("SupplejackApi::Support::Harvestable.create_or_update_fragment(#{attributes.inspect})")
         if fragment = find_fragment(attributes['source_id'])
+          Rails.logger.debug("SupplejackApi::Support::Harvestable.create_or_update_fragment: clearing attributes of #{fragment.inspect}")
           fragment.clear_attributes
         elsif self.fragments.count == 0
           fragment = self.primary_fragment
@@ -25,6 +27,8 @@ module SupplejackApi
 
       def update_from_harvest(attributes={})
         attributes = attributes.try(:symbolize_keys) || {}
+        Rails.logger.debug("SupplejackApi::Support::Harvestable.update_from_harvest(#{attributes.inspect})")
+        Rails.logger.debug("SupplejackApi::Support::Harvestable.update_from_harvest: #{self.class.fields.inspect}")
 
         attributes[:status] ||= "active"
 
@@ -54,6 +58,7 @@ module SupplejackApi
       # that shouldn't be removed (_id, _type, etc..)
       #
       def clear_attributes
+        Rails.logger.debug("SupplejackApi::Support::Harvestable.clear_attributes()")
         self[:source_url] = nil
         self.primary_fragment.clear_attributes
       end

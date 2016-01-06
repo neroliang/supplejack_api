@@ -50,6 +50,8 @@ module SupplejackApi
     end
 
     def clear_attributes
+      Rails.logger.debug("Clearing attributes for Fragment with source id: #{self.source_id}")
+
       mutable_fields = self.class.mutable_fields.dup
       mutable_fields.delete("priority") if self.primary?
       self.raw_attributes.each do |name, value|
@@ -59,6 +61,7 @@ module SupplejackApi
 
     def update_from_harvest(attributes={})
       attributes = attributes.try(:symbolize_keys) || {}
+      Rails.logger.debug("SupplejackApi::Fragment.update_from_harvest(#{attributes.inspect}")
 
       self.source_id = Array(attributes[:source_id]).first if attributes[:source_id].present?
 
