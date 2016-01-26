@@ -4,7 +4,7 @@ module SupplejackApi
       extend ActiveSupport::Concern
 
       included do
-        before_action :create_set_interaction, only: :create
+        #before_action :create_set_interaction, only: :create
 
         def create_set_interaction
           record = SupplejackApi::Record.custom_find(params[:record][:record_id])
