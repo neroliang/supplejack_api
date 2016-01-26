@@ -4,8 +4,8 @@ module SupplejackApi
       extend ActiveSupport::Concern
 
       included do
-        after_action :create_set_record_view, only: :show
-        after_action :create_set_interaction, only: :create
+        #after_action :create_set_record_view, only: :show
+        #after_action :create_set_interaction, only: :create
 
         def create_set_record_view
           return unless @user_set

@@ -4,8 +4,8 @@ module SupplejackApi
       extend ActiveSupport::Concern
 
       included do
-        after_action :log_search, only: :index
-        after_action :log_record_view, only: :show
+        #after_action :log_search, only: :index
+        #after_action :log_record_view, only: :show
 
         def log_search
           return unless @search.valid?
