@@ -35,11 +35,13 @@ module SupplejackApi
     # The output of this worker is a +SupplejackApi::DailyItemMetric+ to represent metrics about the 
     # overall system and one +SupplejackApi::FacetedMetrics+ for each set of records grouped by the +@primary_key+
     def call
+      puts "DailyMetricsWorker#call start"
       facets = FacetsHelper.get_list_of_facet_values(primary_key)
       partial_facets_data = facets.map(&method(:retrieve_facet_data))
       full_facets_data = update_total_new_records(partial_facets_data)
       create_metrics_records(full_facets_data)
       create_daily_metrics
+      puts "DailyMetricsWorker#call end"
     end
 
     private
@@ -84,6 +86,7 @@ module SupplejackApi
       total_copyright_counts = facets.map{|x| x[:copyright_counts]}.reduce({}, &merge_block)
       total_category_counts = facets.map{|x| x[:category_counts]}.reduce({}, &merge_block)
     
+      puts "DailyMetricsWorker#create_metrics_worker: creating FacetedMetrics for 'all'"
       FacetedMetrics.create(
         name: 'all',
         date: Time.zone.today,
