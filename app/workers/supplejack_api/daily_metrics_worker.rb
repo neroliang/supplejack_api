@@ -87,6 +87,7 @@ module SupplejackApi
       total_category_counts = facets.map{|x| x[:category_counts]}.reduce({}, &merge_block)
     
       puts "DailyMetricsWorker#create_metrics_worker: creating FacetedMetrics for 'all'"
+      puts "DailyMetricsWorker#create_metrics_worker FacetedMetrics.count before: #{FacetedMetrics.where(name: 'all').count}"
       FacetedMetrics.create(
         name: 'all',
         date: Time.zone.today,
@@ -97,6 +98,8 @@ module SupplejackApi
       )
 
       facets.each{|x| FacetedMetrics.create(x)}
+
+      puts "DailyMetricsWorker#create_metrics_worker FacetedMetrics.count after: #{FacetedMetrics.where(name: 'all').count}"
     end
 
     def create_daily_metrics
