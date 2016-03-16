@@ -33,6 +33,7 @@ module SupplejackApi
           m.date = Time.zone.today
         end
 
+        p "AllUsageMetric: #{summed_usage_metrics_fields.inspect}"
         all_metric.update(summed_usage_metrics_fields)
         true
       end
