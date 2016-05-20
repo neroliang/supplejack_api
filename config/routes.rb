@@ -49,7 +49,7 @@ SupplejackApi::Engine.routes.draw do
   end
 
   # Harvester
-  namespace :harvester, constraints: SupplejackApi::HarvesterConstraint.new do
+  namespace :harvester do
     resources :records, only: [:create, :update, :show] do
       # TODO: Add record parameter constraint for update and create
       collection do
