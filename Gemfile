@@ -33,6 +33,8 @@ gem 'yard', require: false, group: :development
 gem 'xml_spec', git: "https://github.com/boost/xml_spec", require: false
 gem 'codeclimate-test-reporter', group: :test, require: nil
 gem 'rubocop', require: false
+gem 'swagger-docs'
+
 group :test do
   gem 'faker'
   gem 'json-schema'
