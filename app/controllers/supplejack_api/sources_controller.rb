@@ -46,11 +46,25 @@ module SupplejackApi
     end
 
     def link_check_records
+      # @source = Source.find(params[:id])
+      # @records = [first_two_records(@source.source_id, :oldest).map(&:source_url),
+      #             first_two_records(@source.source_id, :latest).map(&:source_url)].flatten
+
+      # render json: @records.to_json
+
+      Rails.logger.info "LINK_CHECK:id: #{params[:id]}"
+
       @source = Source.find(params[:id])
+
+      Rails.logger.info "LINK_CHECK:source: #{@source}"
+
       @records = []
 
       @records += first_two_records(@source.source_id, :oldest).map(&:source_url)
+      Rails.logger.info "LINK_CHECK:records: #{@records}"
+
       @records += first_two_records(@source.source_id, :latest).map(&:source_url)
+      Rails.logger.info "LINK_CHECK:records: #{@records}"
 
       render json: @records.to_json
     end
@@ -61,7 +75,15 @@ module SupplejackApi
       sort = direction == :latest ? -1 : 1
       records = Record.where('fragments.source_id' => source_id, :status => 'active')
                       .sort('fragments.syndication_date' => sort)
-      records.limit(2).to_a
+
+      Rails.logger.info "LINK_CHECK:records in first_two_records: #{records}"
+      
+      result = records.limit(2).to_a
+      Rails.logger.info "LINK_CHECK:result in first_two_records: #{records}"
+      
+      result
     end
   end
 end
+
+Record.where('fragments.source_id' => source_id, :status => 'active').sort('fragments.syndication_date' => sort)
