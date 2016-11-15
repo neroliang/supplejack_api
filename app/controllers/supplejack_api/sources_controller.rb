@@ -56,7 +56,7 @@ module SupplejackApi
 
       @source = Source.find(params[:id])
 
-      Rails.logger.info "LINK_CHECK:source: #{@source}"
+      Rails.logger.info "LINK_CHECK:source: #{@source.name}"
 
       @records = []
 
@@ -79,7 +79,7 @@ module SupplejackApi
       Rails.logger.info "LINK_CHECK:records in first_two_records: #{records}"
       
       result = records.limit(2).to_a
-      Rails.logger.info "LINK_CHECK:result in first_two_records: #{records}"
+      Rails.logger.info "LINK_CHECK:result in first_two_records: #{result}"
 
       result
     end
