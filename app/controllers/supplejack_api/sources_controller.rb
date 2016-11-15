@@ -78,7 +78,7 @@ module SupplejackApi
 
       Rails.logger.info "LINK_CHECK:records in first_two_records: #{records}"
       
-      result = records.limit(2).to_a
+      result = records.limit(2)
       Rails.logger.info "LINK_CHECK:result in first_two_records: #{result}"
 
       result
