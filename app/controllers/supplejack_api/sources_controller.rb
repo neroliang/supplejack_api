@@ -60,10 +60,10 @@ module SupplejackApi
 
       @records = []
 
-      @records += first_two_records(@source.source_id, :oldest).map(&:source_url)
+      @records += first_two_records(@source.source_id, :oldest)#.map(&:source_url)
       Rails.logger.info "LINK_CHECK:records: #{@records}"
 
-      @records += first_two_records(@source.source_id, :latest).map(&:source_url)
+      @records += first_two_records(@source.source_id, :latest)#.map(&:source_url)
       Rails.logger.info "LINK_CHECK:records: #{@records}"
 
       render json: @records.to_json
@@ -78,7 +78,7 @@ module SupplejackApi
 
       Rails.logger.info "LINK_CHECK:records in first_two_records: #{records}"
       
-      result = records.limit(2)
+      result = records.limit(2).map(&:source_url)
       Rails.logger.info "LINK_CHECK:result in first_two_records: #{result}"
 
       result
