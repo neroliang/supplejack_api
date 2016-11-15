@@ -66,15 +66,14 @@ module SupplejackApi
       # @records += first_two_records(@source.source_id, :latest)#.map(&:source_url)
       # Rails.logger.info "LINK_CHECK:records: #{@records}"
 
-      Record.where('fragments.source_id' => @source.source_id, :status => 'active').sort('fragments.syndication_date' => -1).limit(2).each do |i|
-        Rails.logger.info "LINK_CHECK:source_url: #{i.source_url}"
-        @records << i.source_url
-      end
+      records1 = Record.where('fragments.source_id' => @source.source_id, :status => 'active').sort('fragments.syndication_date' => -1)
+      @records << records1.first.source_url
+      @records << records1.last.source_url
 
-      @records += Record.where('fragments.source_id' => @source.source_id, :status => 'active').sort('fragments.syndication_date' => 1).each do |i|
-        Rails.logger.info "LINK_CHECK:source_url: #{i.source_url}"
-        @records << i.source_url
-      end
+      # Record.where('fragments.source_id' => @source.source_id, :status => 'active').sort('fragments.syndication_date' => 1).each do |i|
+      #   Rails.logger.info "LINK_CHECK:source_url: #{i.source_url}"
+      #   @records << i.source_url
+      # end
 
       Rails.logger.info "LINK_CHECK:records: #{@records}"
 
