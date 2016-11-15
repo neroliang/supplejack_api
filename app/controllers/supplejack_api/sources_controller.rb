@@ -80,10 +80,8 @@ module SupplejackApi
       
       result = records.limit(2).to_a
       Rails.logger.info "LINK_CHECK:result in first_two_records: #{records}"
-      
+
       result
     end
   end
 end
-
-Record.where('fragments.source_id' => source_id, :status => 'active').sort('fragments.syndication_date' => sort)
