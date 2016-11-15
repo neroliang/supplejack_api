@@ -60,10 +60,10 @@ module SupplejackApi
 
       @records = []
 
-      @records += first_two_records(@source.source_id, :oldest).map(&:display_content_partner)
+      @records += first_two_records(@source.source_id, :oldest).map(&:record_id)
       Rails.logger.info "LINK_CHECK:records: #{@records}"
 
-      @records += first_two_records(@source.source_id, :latest).map(&:display_content_partner)
+      @records += first_two_records(@source.source_id, :latest).map(&:record_id)
       Rails.logger.info "LINK_CHECK:records: #{@records}"
 
       # records1 = Record.where('fragments.source_id' => @source.source_id, :status => 'active').sort('fragments.syndication_date' => -1)
