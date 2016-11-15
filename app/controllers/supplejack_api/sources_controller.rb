@@ -60,19 +60,19 @@ module SupplejackApi
 
       @records = []
 
-      # @records += first_two_records(@source.source_id, :oldest)#.map(&:source_url)
-      # Rails.logger.info "LINK_CHECK:records: #{@records}"
+      @records += first_two_records(@source.source_id, :oldest).map(&:source_url)
+      Rails.logger.info "LINK_CHECK:records: #{@records}"
 
-      # @records += first_two_records(@source.source_id, :latest)#.map(&:source_url)
-      # Rails.logger.info "LINK_CHECK:records: #{@records}"
+      @records += first_two_records(@source.source_id, :latest).map(&:source_url)
+      Rails.logger.info "LINK_CHECK:records: #{@records}"
 
-      records1 = Record.where('fragments.source_id' => @source.source_id, :status => 'active').sort('fragments.syndication_date' => -1)
+      # records1 = Record.where('fragments.source_id' => @source.source_id, :status => 'active').sort('fragments.syndication_date' => -1)
 
-      Rails.logger.info "LINK_CHECK:record: #{records1.first}"      
-      @records << records1.first.source_url
+      # Rails.logger.info "LINK_CHECK:record: #{records1.first}"      
+      # @records << records1.first.source_url
 
-      Rails.logger.info "LINK_CHECK:record: #{records1.last}"
-      @records << records1.last.source_url
+      # Rails.logger.info "LINK_CHECK:record: #{records1.last}"
+      # @records << records1.last.source_url
 
       # Record.where('fragments.source_id' => @source.source_id, :status => 'active').sort('fragments.syndication_date' => 1).each do |i|
       #   Rails.logger.info "LINK_CHECK:source_url: #{i.source_url}"
@@ -88,15 +88,16 @@ module SupplejackApi
 
     def first_two_records(source_id, direction)
       sort = direction == :latest ? -1 : 1
-      records = Record.where('fragments.source_id' => source_id, :status => 'active')
-                      .sort('fragments.syndication_date' => sort)
+      # records = Record.where('fragments.source_id' => source_id, :status => 'active')
+      #                 .sort('fragments.syndication_date' => sort)
 
-      Rails.logger.info "LINK_CHECK:records in first_two_records: #{records}"
+      # Rails.logger.info "LINK_CHECK:records in first_two_records: #{records}"
       
-      result = records.limit(2).map(&:source_url)
-      Rails.logger.info "LINK_CHECK:result in first_two_records: #{result}"
+      # result = records.limit(2).map(&:source_url)
+      # Rails.logger.info "LINK_CHECK:result in first_two_records: #{result}"
 
-      result
+      # result
+      Record.where('fragments.source_id' => source_id, :status => 'active').sort('fragments.syndication_date' => sort).limit(2).to_a
     end
   end
 end
